@@ -1,46 +1,167 @@
-# Aging Tool - GitHub Pages
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --text: #172033;
+  --muted: #617089;
+  --line: #dfe5ef;
+  --accent: #174ea6;
+  --accent-dark: #0f397a;
+  --danger: #b42318;
+  --ok: #067647;
+  --warn-bg: #fff6e6;
+  --warn-line: #f0c36d;
+}
 
-Applicazione statica per generare tre report Excel partendo da:
+* { box-sizing: border-box; }
 
-- `Aging_Clienti.xlsx`
-- `Aging_Filiale.xlsx`
-- `Mesi.xlsx`
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
 
-Output generati:
+.page {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
 
-- `Aging Clienti.xlsx`
-- `Aging Filiale.xlsx`
-- `Clienti Dormienti e Persi.xlsx`
-- `Report_Aging.zip` con i tre file insieme
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 28px;
+}
 
-## Come pubblicare su GitHub Pages
+.eyebrow {
+  margin: 0 0 8px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
 
-1. Crea un repository, per esempio `aging-tool`.
-2. Copia in root questi file e cartelle:
-   - `index.html`
-   - `styles.css`
-   - `app.js`
-   - `vendor/jszip.min.js`
-   - `.nojekyll`
-3. Fai commit e push.
-4. In GitHub vai su **Settings > Pages**.
-5. Source: `Deploy from a branch`.
-6. Branch: `main`, folder `/root`.
-7. Apri il link pubblicato da GitHub Pages.
+h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.02;
+}
 
-## Nota privacy
+.subtitle {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.5;
+}
 
-I file Excel vengono letti ed elaborati nel browser dell'utente. Non vengono caricati su GitHub, non vengono salvati nel repository e non vengono inviati a un backend.
+.privacy-card {
+  min-width: 250px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 40px rgba(16, 24, 40, .07);
+}
 
-## Nota tecnica
+.privacy-card strong,
+.privacy-card span { display: block; }
+.privacy-card span { color: var(--muted); margin-top: 6px; }
 
-La logica replica gli script Python presenti nello zip originale. In particolare, per i report Aging il saldo totale viene ricostruito leggendo la colonna T delle righe totali con cella in grassetto.
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
 
-Prima della diffusione a tutte le filiali è consigliato confrontare gli output generati dalla pagina con quelli prodotti dagli script Python sui file campione.
+.upload-card,
+.status,
+.results,
+.notes {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 28px rgba(16, 24, 40, .05);
+}
 
+.upload-card label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
 
-## Versione 2
+.upload-card input {
+  width: 100%;
+  border: 1px dashed #b9c4d5;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fafcff;
+}
 
-- Consente di caricare anche un solo file alla volta.
-- Corregge la lettura degli XLSX con namespace XML prefissato, ad esempio `x:sheet`, `x:row`, `x:c`.
-- Gestisce celle senza riferimento esplicito, presenti in alcuni export Excel.
+.upload-card p,
+.notes li,
+.status p,
+.results p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 22px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:hover { background: var(--accent-dark); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+button.secondary {
+  background: #e9eef7;
+  color: var(--accent-dark);
+}
+button.secondary:hover { background: #dce5f4; }
+
+.status {
+  margin-bottom: 24px;
+}
+.status.ok { border-color: rgba(6, 118, 71, .35); }
+.status.ok p { color: var(--ok); }
+.status.error { border-color: rgba(180, 35, 24, .35); }
+.status.error p { color: var(--danger); }
+.status.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+
+.results {
+  margin-bottom: 24px;
+}
+.results h2,
+.notes h2 { margin-top: 0; }
+.individual {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.hidden { display: none; }
+
+@media (max-width: 860px) {
+  .hero,
+  .grid { grid-template-columns: 1fr; }
+  .privacy-card { min-width: 0; }
+  .actions { flex-direction: column; }
+  button { width: 100%; }
+}
+
+.versione { margin-top: 28px; color: #6b7894; font-size: 13px; }

@@ -1,0 +1,23 @@
+DEPLOY CORRETTO SU GITHUB PAGES
+
+1. Apri lo ZIP ed estrai i file.
+2. Nel repository aging_tool cancella i file attuali oppure sovrascrivili.
+3. La root del repository deve contenere direttamente:
+   - index.html
+   - app.js
+   - styles.css
+   - vendor/jszip.min.js
+   - README.md
+   - .nojekyll
+
+ERRORE DA EVITARE
+Non caricare una cartella contenitore. Non mettere i file dentro aging_tool_v3/.
+
+CONTROLLO RAPIDO
+Apri index.html su GitHub: la prima riga deve essere:
+<!doctype html>
+
+Apri app.js su GitHub: la prima riga deve essere:
+'use strict';
+
+Se la pagina pubblicata mostra testo che inizia con 'use strict', vuol dire che app.js è finito dentro index.html.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aging Tool</title>
-  <link rel="stylesheet" href="styles.css?v=20260529-4" />
+  <title>Aging Tool - Scaduti e clienti dormienti</title>
+  <link rel="stylesheet" href="styles.css?v=20260529-5" />
 </head>
 <body>
   <main class="page">
@@ -12,36 +12,32 @@
       <div>
         <p class="eyebrow">Aging Tool</p>
         <h1>Report scaduti, dormienti e persi</h1>
-        <p class="lead">Carica uno o più file Excel di input. L'elaborazione avviene nel browser: i file non vengono salvati né inviati a server esterni.</p>
+        <p class="subtitle">
+          Carica uno o più file Excel di input. L'elaborazione avviene nel browser: i file non vengono salvati né inviati a server esterni.
+        </p>
       </div>
-      <aside class="privacy-card">
+      <div class="privacy-card">
         <strong>Privacy</strong>
         <span>Elaborazione locale sul PC dell'utente</span>
-      </aside>
+      </div>
     </section>
 
-    <section class="cards" aria-label="Upload file Excel">
-      <article class="card">
-        <h2>1. Aging_Clienti.xlsx</h2>
-        <label class="file-label" for="agingClienti">
-          <input id="agingClienti" type="file" accept=".xlsx" />
-        </label>
+    <section class="grid">
+      <article class="upload-card">
+        <label for="agingClienti">1. Aging_Clienti.xlsx</label>
+        <input id="agingClienti" type="file" accept=".xlsx" />
         <p>Genera il report <strong>Aging Clienti.xlsx</strong>.</p>
       </article>
 
-      <article class="card">
-        <h2>2. Aging_Filiale.xlsx</h2>
-        <label class="file-label" for="agingFiliale">
-          <input id="agingFiliale" type="file" accept=".xlsx" />
-        </label>
+      <article class="upload-card">
+        <label for="agingFiliale">2. Aging_Filiale.xlsx</label>
+        <input id="agingFiliale" type="file" accept=".xlsx" />
         <p>Genera il report <strong>Aging Filiale.xlsx</strong>.</p>
       </article>
 
-      <article class="card">
-        <h2>3. Mesi.xlsx</h2>
-        <label class="file-label" for="mesi">
-          <input id="mesi" type="file" accept=".xlsx" />
-        </label>
+      <article class="upload-card">
+        <label for="mesi">3. Mesi.xlsx</label>
+        <input id="mesi" type="file" accept=".xlsx" />
         <p>Genera il report <strong>Clienti Dormienti e Persi.xlsx</strong>.</p>
       </article>
     </section>
@@ -51,27 +47,34 @@
       <button id="resetBtn" type="button" class="secondary">Pulisci</button>
     </section>
 
-    <section id="status" class="status">
+    <section id="status" class="status" aria-live="polite">
       <p>In attesa dei file.</p>
     </section>
 
     <section id="results" class="results hidden">
       <h2>Output generati</h2>
       <p id="resultsText">Scarica il pacchetto ZIP oppure i singoli file Excel generati.</p>
-      <div class="download-grid">
-        <button id="downloadZipBtn" type="button">Scarica ZIP</button>
-        <button id="downloadClientiBtn" type="button" class="secondary hidden">Aging Clienti.xlsx</button>
-        <button id="downloadFilialeBtn" type="button" class="secondary hidden">Aging Filiale.xlsx</button>
-        <button id="downloadDormientiBtn" type="button" class="secondary hidden">Clienti Dormienti e Persi.xlsx</button>
+      <button id="downloadZipBtn" type="button">Scarica Report_Aging.zip</button>
+      <div class="individual">
+        <button id="downloadClientiBtn" type="button" class="secondary">Scarica Aging Clienti.xlsx</button>
+        <button id="downloadFilialeBtn" type="button" class="secondary">Scarica Aging Filiale.xlsx</button>
+        <button id="downloadDormientiBtn" type="button" class="secondary">Scarica Clienti Dormienti e Persi.xlsx</button>
       </div>
     </section>
 
-    <footer>
-      <span>Versione 20260529-4</span>
-    </footer>
+    <section class="notes">
+      <h2>Regole operative</h2>
+      <ul>
+        <li>È possibile caricare anche un solo file alla volta: verrà generato solo il relativo output.</li>
+        <li>Usare i file esportati con i nomi e la struttura standard.</li>
+        <li>Il file <strong>Mesi.xlsx</strong> deve contenere almeno 24 mesi.</li>
+        <li>Nei file Aging il saldo totale viene letto dalla colonna T quando la cella è in grassetto.</li>
+      </ul>
+    </section>
+    <footer class="versione">Versione 20260529-5</footer>
   </main>
 
   <script src="vendor/jszip.min.js"></script>
-  <script src="app.js?v=20260529-4"></script>
+  <script src="app.js?v=20260529-5"></script>
 </body>
 </html>

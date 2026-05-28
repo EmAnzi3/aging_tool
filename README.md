@@ -1,79 +1,46 @@
-<!doctype html>
-<html lang="it">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aging Tool - Scaduti e clienti dormienti</title>
-  <link rel="stylesheet" href="styles.css?v=20260528-2" />
-</head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">Aging Tool</p>
-        <h1>Report scaduti, dormienti e persi</h1>
-        <p class="subtitle">
-          Carica uno o più file Excel di input. L'elaborazione avviene nel browser: i file non vengono salvati né inviati a server esterni.
-        </p>
-      </div>
-      <div class="privacy-card">
-        <strong>Privacy</strong>
-        <span>Elaborazione locale sul PC dell'utente</span>
-      </div>
-    </section>
+# Aging Tool - GitHub Pages
 
-    <section class="grid">
-      <article class="upload-card">
-        <label for="agingClienti">1. Aging_Clienti.xlsx</label>
-        <input id="agingClienti" type="file" accept=".xlsx" />
-        <p>Genera il report <strong>Aging Clienti.xlsx</strong>.</p>
-      </article>
+Applicazione statica per generare tre report Excel partendo da:
 
-      <article class="upload-card">
-        <label for="agingFiliale">2. Aging_Filiale.xlsx</label>
-        <input id="agingFiliale" type="file" accept=".xlsx" />
-        <p>Genera il report <strong>Aging Filiale.xlsx</strong>.</p>
-      </article>
+- `Aging_Clienti.xlsx`
+- `Aging_Filiale.xlsx`
+- `Mesi.xlsx`
 
-      <article class="upload-card">
-        <label for="mesi">3. Mesi.xlsx</label>
-        <input id="mesi" type="file" accept=".xlsx" />
-        <p>Genera il report <strong>Clienti Dormienti e Persi.xlsx</strong>.</p>
-      </article>
-    </section>
+Output generati:
 
-    <section class="actions">
-      <button id="generateBtn" type="button">Genera report</button>
-      <button id="resetBtn" type="button" class="secondary">Pulisci</button>
-    </section>
+- `Aging Clienti.xlsx`
+- `Aging Filiale.xlsx`
+- `Clienti Dormienti e Persi.xlsx`
+- `Report_Aging.zip` con i tre file insieme
 
-    <section id="status" class="status" aria-live="polite">
-      <p>In attesa dei file.</p>
-    </section>
+## Come pubblicare su GitHub Pages
 
-    <section id="results" class="results hidden">
-      <h2>Output generati</h2>
-      <p id="resultsText">Scarica il pacchetto ZIP oppure i singoli file Excel generati.</p>
-      <button id="downloadZipBtn" type="button">Scarica Report_Aging.zip</button>
-      <div class="individual">
-        <button id="downloadClientiBtn" type="button" class="secondary">Scarica Aging Clienti.xlsx</button>
-        <button id="downloadFilialeBtn" type="button" class="secondary">Scarica Aging Filiale.xlsx</button>
-        <button id="downloadDormientiBtn" type="button" class="secondary">Scarica Clienti Dormienti e Persi.xlsx</button>
-      </div>
-    </section>
+1. Crea un repository, per esempio `aging-tool`.
+2. Copia in root questi file e cartelle:
+   - `index.html`
+   - `styles.css`
+   - `app.js`
+   - `vendor/jszip.min.js`
+   - `.nojekyll`
+3. Fai commit e push.
+4. In GitHub vai su **Settings > Pages**.
+5. Source: `Deploy from a branch`.
+6. Branch: `main`, folder `/root`.
+7. Apri il link pubblicato da GitHub Pages.
 
-    <section class="notes">
-      <h2>Regole operative</h2>
-      <ul>
-        <li>È possibile caricare anche un solo file alla volta: verrà generato solo il relativo output.</li>
-        <li>Usare i file esportati con i nomi e la struttura standard.</li>
-        <li>Il file <strong>Mesi.xlsx</strong> deve contenere almeno 24 mesi.</li>
-        <li>Nei file Aging il saldo totale viene letto dalla colonna T quando la cella è in grassetto.</li>
-      </ul>
-    </section>
-  </main>
+## Nota privacy
 
-  <script src="vendor/jszip.min.js"></script>
-  <script src="app.js?v=20260528-2"></script>
-</body>
-</html>
+I file Excel vengono letti ed elaborati nel browser dell'utente. Non vengono caricati su GitHub, non vengono salvati nel repository e non vengono inviati a un backend.
+
+## Nota tecnica
+
+La logica replica gli script Python presenti nello zip originale. In particolare, per i report Aging il saldo totale viene ricostruito leggendo la colonna T delle righe totali con cella in grassetto.
+
+Prima della diffusione a tutte le filiali è consigliato confrontare gli output generati dalla pagina con quelli prodotti dagli script Python sui file campione.
+
+
+## Versione 2
+
+- Consente di caricare anche un solo file alla volta.
+- Corregge la lettura degli XLSX con namespace XML prefissato, ad esempio `x:sheet`, `x:row`, `x:c`.
+- Gestisce celle senza riferimento esplicito, presenti in alcuni export Excel.
