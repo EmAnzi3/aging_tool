@@ -1,4 +1,4 @@
-// Patch output Aging - v20260529-7
+// Patch output Aging - v20260529-8
 (() => {
   const originalBuildAgingReport = buildAgingReport;
 
@@ -11,18 +11,23 @@
     };
   };
 
-  function warmHeader(rows) {
+  function styleHeader(rows) {
     if (!rows.length) return rows;
     rows[0] = rows[0].map((cell) => ({ ...asCell(cell), style: STYLES.HIGHLIGHT_MONEY }));
     return rows;
   }
 
-  function originalSheetWidths(headers, rows) {
-    return headers.map((h, i) => {
-      const sample = [h, ...rows.slice(0, 120).map((r) => r[h])];
-      const max = maxTextLength(sample) + 2;
-      const upper = i === 0 ? 22 : 32;
-      return Math.min(Math.max(max, 12), upper);
+  function autofitWidths(rows, min = 10, max = 60) {
+    const colCount = Math.max(...rows.map((r) => r.length), 1);
+    return Array.from({ length: colCount }, (_, colIdx) => {
+      let best = min;
+      rows.forEach((row) => {
+        const cell = asCell(row[colIdx]);
+        const value = cell.formula ? cell.value : cell.value;
+        const len = toText(value ?? '').length + 2;
+        if (len > best) best = len;
+      });
+      return Math.min(Math.max(best, min), max);
     });
   }
 
@@ -44,11 +49,7 @@
       ? ['Codice Cliente', 'Ragione Sociale', 'Filiali di Fatturazione', ...SCADUTO_COLUMNS, 'Saldo Totale', 'Totale Scaduto Reale', '% Scaduto vs Saldo', 'Giorni Scaduto (ponderati)']
       : ['Codice Cliente', 'Ragione Sociale', ...SCADUTO_COLUMNS, 'Saldo Totale', 'Totale Scaduto Reale', '% Scaduto vs Saldo', 'Giorni Scaduto (ponderati)'];
 
-    const detailRows = [detailHeaders];
-    report.clients.forEach((client) => {
-      detailRows.push(detailHeaders.map((h) => client[h] ?? ''));
-    });
-
+    const detailRows = [detailHeaders, ...report.clients.map((client) => detailHeaders.map((h) => client[h] ?? ''))];
     const originalHeaders = report.originalHeaders || [];
     const originalRows = [originalHeaders, ...(report.originalRows || []).map((row) => originalHeaders.map((h) => row[h] ?? ''))];
 
@@ -59,35 +60,18 @@
     const weightedLetter = columnNumberToName(detailWeightedCol);
     const lastDetailRow = Math.max(2, detailRows.length);
 
-    const summaryStyled = warmHeader(applyStyles(summaryRows, {
-      headerRow: 1,
-      moneyColumns: new Set([2]),
-      percentColumns: new Set([3]),
-    }));
-
-    const detailStyled = warmHeader(applyStyles(detailRows, {
+    const summaryStyled = styleHeader(applyStyles(summaryRows, { headerRow: 1, moneyColumns: new Set([2]), percentColumns: new Set([3]) }));
+    const detailStyled = styleHeader(applyStyles(detailRows, {
       headerRow: 1,
       moneyColumns: rangeSet(detailMoneyStart, detailMoneyEnd),
       percentColumns: new Set([detailPctCol]),
       decimalColumns: new Set([detailWeightedCol]),
     }));
 
-    const originalStyled = warmHeader(applyStyles(originalRows, { headerRow: 1 }));
-
-    const sheets = [
-      { name: 'Riepilogo', rows: summaryStyled, widths: [22, 18, 18], freezeTopRow: true },
-      {
-        name: 'Dettaglio Clienti',
-        rows: detailStyled,
-        widths: options.includeBillingBranches
-          ? [16, 40, 35, 18, 18, 18, 18, 18, 18, 18, 14, 22]
-          : [16, 40, 18, 18, 18, 18, 18, 18, 18, 14, 22],
-        freezeTopRow: true,
-        conditionalFormatting: report.clients.length ? colorScaleXml(`${weightedLetter}2:${weightedLetter}${lastDetailRow}`) : '',
-      },
-      { name: 'Dati_originali', rows: originalStyled, widths: originalSheetWidths(originalHeaders, report.originalRows || []), freezeTopRow: true },
-    ];
-
-    return createXlsx(sheets);
+    return createXlsx([
+      { name: 'Riepilogo', rows: summaryStyled, widths: autofitWidths(summaryRows, 12, 28), freezeTopRow: true },
+      { name: 'Dettaglio Clienti', rows: detailStyled, widths: autofitWidths(detailRows, 10, 60), freezeTopRow: true, conditionalFormatting: report.clients.length ? colorScaleXml(`${weightedLetter}2:${weightedLetter}${lastDetailRow}`) : '' },
+      { name: 'Dati_originali', rows: originalRows },
+    ]);
   };
 })();
