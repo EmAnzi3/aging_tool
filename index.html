@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aging Tool</title>
-  <link rel="stylesheet" href="styles.css?v=20260529-6" />
+  <link rel="stylesheet" href="styles.css?v=20260713-1" />
 </head>
 <body>
   <main class="page">
@@ -28,11 +28,11 @@
       <button id="downloadZipBtn" type="button">Scarica Report_Aging.zip</button>
       <div class="individual"><button id="downloadClientiBtn" type="button" class="secondary">Scarica Aging Clienti.xlsx</button><button id="downloadFilialeBtn" type="button" class="secondary">Scarica Aging Filiale.xlsx</button><button id="downloadDormientiBtn" type="button" class="secondary">Scarica Clienti Dormienti e Persi.xlsx</button></div>
     </section>
-    <section class="notes"><h2>Regole operative</h2><ul><li>È possibile caricare anche un solo file alla volta.</li><li>Nel report Dormienti/Persi l'ordine dei fogli è: Dormienti, Persi, Dati_originali.</li><li>Nel foglio Persi, le righe rosse indicano clienti in scadenza di visibilità il mese successivo.</li></ul></section>
-    <footer class="versione">Versione 20260529-6</footer>
+    <section class="notes"><h2>Regole operative</h2><ul><li>È possibile caricare anche un solo file alla volta.</li><li>Le RIBA e SEPA sono conteggiate come scadute solo quando risultano insolute.</li><li>Note e crediti mantengono la propria fascia temporale e sono mostrati insieme allo scaduto lordo e netto.</li><li>Nel report Dormienti/Persi l'ordine dei fogli è: Dormienti, Persi, Dati_originali.</li><li>Nel foglio Persi, le righe rosse indicano clienti in scadenza di visibilità il mese successivo.</li></ul></section>
+    <footer class="versione">Versione 20260713-1</footer>
   </main>
   <script src="vendor/jszip.min.js"></script>
-  <script src="app.js?v=20260529-6"></script>
-  <script src="patch_dormienti.js?v=20260529-6"></script>
+  <script src="app.js?v=20260713-1"></script>
+  <script src="patch_output_standard.js?v=20260713-1"></script>
 </body>
 </html>
