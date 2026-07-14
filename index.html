@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aging Tool</title>
-  <link rel="stylesheet" href="styles.css?v=20260714-2" />
+  <link rel="stylesheet" href="styles.css?v=20260714-3" />
 </head>
 <body>
   <main class="page">
@@ -12,17 +12,26 @@
       <div>
         <p class="eyebrow">Aging Tool</p>
         <h1>Report scaduti, dormienti e persi</h1>
-        <p class="subtitle">Carica uno o più file Excel di input. L'elaborazione avviene nel browser: i file caricati non vengono salvati né inviati a server esterni.</p>
+        <p class="subtitle">Scegli il report da generare e carica il relativo file Excel. Puoi generare un solo report oppure più report insieme. I file caricati vengono elaborati localmente nel browser e non vengono salvati né inviati a server esterni.</p>
       </div>
       <div class="privacy-card"><strong>Privacy</strong><span>Elaborazione locale sul PC dell'utente</span></div>
     </section>
     <section class="grid">
-      <article class="upload-card"><label for="agingClienti">1. Aging_Clienti.xlsx</label><input id="agingClienti" type="file" accept=".xlsx" /><p>Genera il report <strong>Aging Clienti.xlsx</strong>.</p></article>
-      <article class="upload-card"><label for="agingFiliale">2. Aging_Filiale.xlsx</label><input id="agingFiliale" type="file" accept=".xlsx" /><p>Genera il report <strong>Aging Filiale.xlsx</strong>.</p></article>
       <article class="upload-card">
-        <label for="mesi">3. Mesi.xlsx</label>
-        <input id="mesi" type="file" accept=".xlsx" />
-        <p>Genera il report <strong>Clienti Dormienti e Persi.xlsx</strong>.</p>
+        <label for="agingClienti">Aging Clienti</label>
+        <p><strong>File richiesto:</strong> Aging_Clienti.xlsx</p>
+        <input id="agingClienti" type="file" accept=".xlsx" />
+        <p>Genera il report <strong>Aging Clienti.xlsx</strong>.</p>
+      </article>
+      <article class="upload-card">
+        <label for="agingFiliale">Aging Filiale</label>
+        <p><strong>File richiesto:</strong> Aging_Filiale.xlsx</p>
+        <input id="agingFiliale" type="file" accept=".xlsx" />
+        <p>Genera il report <strong>Aging Filiale.xlsx</strong>.</p>
+      </article>
+      <article class="upload-card">
+        <label for="mesi">Dormienti e Persi</label>
+        <p><strong>Procedura:</strong> seleziona la tua filiale, carica <strong>Mesi.xlsx</strong> e premi <strong>Genera report</strong>.</p>
         <div class="branch-picker">
           <label for="filialeDormienti">Filiale da analizzare</label>
           <select id="filialeDormienti" disabled>
@@ -30,6 +39,9 @@
           </select>
           <small id="mappingStatus" class="mapping-status">Caricamento della mappatura centralizzata...</small>
         </div>
+        <p><strong>File richiesto:</strong> Mesi.xlsx</p>
+        <input id="mesi" type="file" accept=".xlsx" />
+        <p>La mappatura clienti, filiali e Privati è già integrata e viene aggiornata centralmente.</p>
       </article>
     </section>
     <section class="actions"><button id="generateBtn" type="button">Genera report</button><button id="resetBtn" type="button" class="secondary">Pulisci</button></section>
@@ -39,17 +51,33 @@
       <button id="downloadZipBtn" type="button">Scarica Report_Aging.zip</button>
       <div class="individual"><button id="downloadClientiBtn" type="button" class="secondary">Scarica Aging Clienti.xlsx</button><button id="downloadFilialeBtn" type="button" class="secondary">Scarica Aging Filiale.xlsx</button><button id="downloadDormientiBtn" type="button" class="secondary">Scarica Clienti Dormienti e Persi.xlsx</button></div>
     </section>
-    <section class="notes"><h2>Regole operative</h2><ul><li>È possibile caricare anche un solo file alla volta.</li><li>Le RIBA e SEPA sono conteggiate come scadute solo quando risultano insolute.</li><li>Note e crediti mantengono la propria fascia temporale e sono mostrati insieme allo scaduto lordo e netto.</li><li>Nel report Aging Clienti sono indicate solo le filiali che presentano scaduti validi o note/crediti nelle fasce.</li><li>Per Dormienti/Persi occorre selezionare la filiale e caricare soltanto Mesi.xlsx: la competenza clienti e l'indicazione Privato/Azienda derivano dalla mappatura centralizzata.</li><li>Dormienti e Persi sono ordinati per fatturato degli ultimi 24 mesi. Le righe arancioni cambieranno stato il mese successivo; le righe rosse usciranno dal radar il mese successivo.</li></ul></section>
-    <footer class="versione">Versione 20260714-2</footer>
+    <section class="notes">
+      <h2>Regole operative</h2>
+      <h3>Aging</h3>
+      <ul>
+        <li>Le RIBA e SEPA sono conteggiate come scadute solo quando risultano insolute.</li>
+        <li>Note e crediti mantengono la propria fascia temporale e sono mostrati insieme allo scaduto lordo e netto.</li>
+        <li>Nel report Aging Clienti sono indicate solo le filiali che presentano scaduti validi oppure note/crediti nelle fasce temporali.</li>
+      </ul>
+      <h3>Dormienti e Persi</h3>
+      <ul>
+        <li>Seleziona la filiale e carica soltanto Mesi.xlsx: la competenza dei clienti e l'indicazione Privato/Azienda derivano dalla mappatura centralizzata.</li>
+        <li>Dormienti e Persi sono ordinati per fatturato degli ultimi 24 mesi.</li>
+        <li>Le righe arancioni indicano i Dormienti che diventeranno Persi il mese successivo.</li>
+        <li>Le righe rosse indicano i Persi che usciranno dal radar il mese successivo.</li>
+        <li>I Privati sono identificati e conteggiati separatamente.</li>
+      </ul>
+    </section>
+    <footer class="versione">Versione 20260714-3</footer>
   </main>
   <script src="vendor/jszip.min.js"></script>
-  <script src="app.js?v=20260714-2"></script>
-  <script src="patch_output_standard.js?v=20260714-2"></script>
-  <script src="patch_filiali.js?v=20260714-2"></script>
-  <script src="patch_dormienti_centrale_1.js?v=20260714-2"></script>
-  <script src="patch_dormienti_centrale_2.js?v=20260714-2"></script>
-  <script src="patch_dormienti_centrale_3.js?v=20260714-2"></script>
-  <script src="patch_dormienti_centrale_4.js?v=20260714-2"></script>
-  <script src="patch_dormienti_colori.js?v=20260714-2"></script>
+  <script src="app.js?v=20260714-3"></script>
+  <script src="patch_output_standard.js?v=20260714-3"></script>
+  <script src="patch_filiali.js?v=20260714-3"></script>
+  <script src="patch_dormienti_centrale_1.js?v=20260714-3"></script>
+  <script src="patch_dormienti_centrale_2.js?v=20260714-3"></script>
+  <script src="patch_dormienti_centrale_3.js?v=20260714-3"></script>
+  <script src="patch_dormienti_centrale_4.js?v=20260714-3"></script>
+  <script src="patch_dormienti_colori.js?v=20260714-3"></script>
 </body>
 </html>
