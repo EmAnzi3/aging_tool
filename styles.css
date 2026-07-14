@@ -108,6 +108,41 @@ h1 {
   line-height: 1.45;
 }
 
+.branch-picker {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.branch-picker label {
+  margin-bottom: 8px;
+}
+
+.upload-card select {
+  width: 100%;
+  border: 1px solid #b9c4d5;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fafcff;
+  color: var(--text);
+  font: inherit;
+}
+
+.upload-card select:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+.mapping-status {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.mapping-status.ok { color: var(--ok); }
+.mapping-status.error { color: var(--danger); }
+
 .actions {
   display: flex;
   gap: 12px;
